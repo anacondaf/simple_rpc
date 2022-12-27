@@ -18,11 +18,16 @@ func main() {
 		log.Fatal(err)
 	}
 
-	var reply []Book
+	var reply = new([]Book)
 
-	if err := client.Call("BookService.GetAllBooks", "Nothing", &reply); err != nil {
+	if err := client.Call("BookService.GetAllBooks", "Nothing", reply); err != nil {
 		log.Fatal(err)
 	}
+	fmt.Printf("%+v\n", *reply)
 
-	fmt.Printf("%+v", reply)
+	var newBook = Book{Id: "2", Name: "The blizzard"}
+	if err := client.Call("BookService.AddBook", newBook, reply); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("%+v\n", *reply)
 }

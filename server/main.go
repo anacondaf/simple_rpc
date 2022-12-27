@@ -1,6 +1,8 @@
 package main
 
 import (
+	"errors"
+	"fmt"
 	"log"
 	"net"
 	"net/http"
@@ -18,6 +20,20 @@ type Book struct {
 
 func (b *Book) GetAllBooks(nothing string, reply *[]Book) error {
 	*reply = books
+	return nil
+}
+
+func (b *Book) AddBook(book Book, reply *[]Book) error {
+	for _, val := range books {
+		if val.Id == book.Id {
+			return errors.New(fmt.Sprintf("Book with id %v is already exist", book.Id))
+		}
+	}
+
+	books = append(books, book)
+
+	*reply = books
+
 	return nil
 }
 
